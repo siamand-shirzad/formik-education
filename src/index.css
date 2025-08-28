@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: shabnam;
+  src: url(./assets/fonts/Shabnam.ttf) format("woff");
+}
+*{
+  font-family: shabnam;
+  direction: rtl;
+  text-align: right;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    @apply opacity-0 animate-[fadein_1s_ease-in-out_forwards];
+  }
+}
+@theme {
+    --animate-gradientMove: gradientMove 3s ease-in-out infinite;
+    @keyframes gradientMove {
+        0%, 100% {
+          background-position: 0% 50%;
+          
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+    }
+  }
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
