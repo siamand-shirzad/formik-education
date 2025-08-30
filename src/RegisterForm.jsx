@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
 import { FaLock, FaRegUser, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import * as yup from 'yup';
-
+import {validationSchema} from './validation'
+import { registerFields } from './formFields';
 const initialValues = {
 	name: '',
 	email: '',
@@ -13,60 +13,8 @@ const onSubmit = (values, { resetForm }) => {
 	alert('sucesss');
 	resetForm();
 };
-// const validate = values => {
-// 	let errors = {};
-// 	if (!values.name) {
-// 		errors.name = 'لطفا این قسمت را پر کنید';
-// 	}
-// 	if (!values.email) {
-// 		errors.email = 'لطفا این قسمت را پر کنید';
-// 	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-// 		//regulare expression REGEX
-// 		errors.email = ' لطفا فرم ایمیل را صحیح وارد کنید ';
-// 	}
-// 	if (!values.password) {
-// 		errors.password = 'لطفا این قسمت را پر کنید';
-// 	}
-// 	return errors;
-// };
-const validationSchema = yup.object({
-	name: yup.string().required('لطفا این قسمت را پر کنید'),
-	email: yup
-		.string()
-		.required('لطفا این قسمت را پر کنید')
-		.email('لطفا قالب ایمیل را رعایت کنید مثال: aaa.@example.com'),
-	password: yup
-		.string()
-		.required('لطفا این قسمت را پر کنید')
-		.min(8, 'حداقل 8 کاراکتر')
-		.matches(/[A-Z]/, 'حداقل یک حرف بزرگ')
-		.matches(/[a-z]/, 'حداقل یک حرف کوچک')
-		.matches(/[0-9]/, 'حداقل یک عدد')
-});
 
 const RegisterForm = () => {
-	// const formik = useFormik({
-	// 	initialValues,
-	// 	onSubmit,
-	// 	// validate,
-	// 	validationSchema
-
-	// });
-	const fields = [
-		{
-			name: 'name',
-			type: 'text',
-			placeholder: 'نام کاربری',
-			icon: <FaRegUser className="text-xl" />
-		},
-		{ name: 'email', type: 'email', placeholder: 'ایمیل', icon: <MdEmail className="text-xl" /> },
-		{
-			name: 'password',
-			type: 'password',
-			placeholder: 'رمز عبور',
-			icon: <FaLock className="text-xl" />
-		}
-	];
 
 	return (
 		<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
@@ -82,28 +30,29 @@ const RegisterForm = () => {
 					<h2 className="font-bold text-xl text-gray-800 mt-2">لطفا ثبت نام کنید</h2>
 					<p className="text-gray-400 text-sm">لطفا اطلاعات خود را وارد نمایید</p>
 					{/* <!-- form --> */}
-					<Form className=" w-full ">
-						{fields.map(({ icon, ...rest }, index) => (
-							<div className="flex flex-col items-center w-full ">
+					<Form className=" w-full space-y-4">
+						{registerFields.map(({ icon, ...rest }, index) => (
+							<div key={rest.name} className="flex flex-col items-center w-full ">
 								<div
-									className={` w-full mt-4 border-b border-b-gray-400 focus-within:border-blue-400 flex gap-3`}>
+									className={` w-full  border-b border-b-gray-400 focus-within:border-blue-400 flex gap-3`}>
 									{icon}
 									<Field
-										className="  placeholder:text-sm  bg-transprent focus:outline-none flex-1
+										className="  placeholder:text-sm  bg-transparent focus:outline-none flex-1
 									placeholder:text-gray-400 text-gray-700"
 										{...rest}
 									/>
 								</div>
-								<ErrorMessage name={rest.name}>
+								{/* <ErrorMessage name={rest.name}>
 									{err => <small className="text-red-500 mt-1  ">{err}</small>}
-								</ErrorMessage>
+								</ErrorMessage> */} 
+								<ErrorMessage name={rest.name} component="span" className="text-red-500 text-xs mt-1" />
 							</div>
 						))}
 
 						{/* <!-- button --> */}
 						<button
 							type="submit"
-							className="text-white flex items-center justify-center bg-blue-500 w-full rounded-lg font-bold mt-4 py-2 hover:bg-blue-600 hover:scale-105 transition-all duration-300 ease-in-out ">
+							className="text-white flex items-center justify-center bg-blue-500 w-full rounded-lg font-bold mt-8 py-2 hover:bg-blue-600 hover:scale-105 transition-all duration-300 ease-in-out ">
 							ثبت نام
 						</button>
 					</Form>
